@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var controllers = require('./controllers');
+var cors = require('cors');
+app.use(cors({origin: 'http://178.33.122.217:8000'}));
 
 var app = express();
 app.use(bodyParser.json());
