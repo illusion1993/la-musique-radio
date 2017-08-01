@@ -9,7 +9,7 @@ module.exports.build_search_index = function (req, res) {
             console.log(err);
         else {
             if (!built) {
-                search_box = searchico(stations, { deep: false, key: ['title', 'genre', 'location', 'language'] });
+                search_box = searchico(stations, { deep: false, keys: ['title', 'genre', 'location', 'language'] });
                 console.log('\n**Built Radio Search Index**');
             }
             res.send('Building Radio Search Index');
