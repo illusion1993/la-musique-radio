@@ -37,7 +37,7 @@ function get_stations_list (callback, page_number, pagination_size) {
 module.exports.stations_list = get_stations_list;
 
 
-var search_box, built = false, pages_inserted = 0, total_pages = 1, batch_size = 50;
+var search_box, built = false, pages_inserted = 0, total_pages = 1, batch_size = 50, total_rows = 0;
 // Brings next page of objects, then inserts them into search
 function insert_next_page () {
     if (pages_inserted === total_pages) {
@@ -52,8 +52,9 @@ function insert_next_page () {
         pages_inserted++;
         total_pages = parseInt(stations_page.pages);
         stations_page = undefined;
+        total_rows += batch_size;
 
-        console.log('Inserted ' + batch_size + ' more rows');
+        console.log('Inserted ' + batch_size + ' more rows, total inserted: ' + total_rows);
 
         insert_next_page();
     }, pages_inserted + 1, batch_size);
