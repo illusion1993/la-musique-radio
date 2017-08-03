@@ -1,35 +1,15 @@
 var radioStationModel = require('./models');
-var searchico = require('searchico');
-
-var search_box, built = false;
+var utils = require('./utils');
 
 module.exports.build_search_index = function (req, res) {
-    radioStationModel.get_all_stations(function (err, stations) {
-        if (err)
-            console.log(err);
-        else {
-            if (!built) {
-                search_box = searchico(stations, { deep: false, keys: ['title', 'genre', 'location', 'language'] });
-                console.log('\n**Built Radio Search Index**');
-            }
-            res.send('Building Radio Search Index');
-            built = true;
-        }
-    });
+    radioStationModel.build_search_index(req.query.batch_size);
+    res.send('Building Radio Search Index');
 };
 
 module.exports.stations_list = function (req, res) {
-    radioStationModel.get_all_stations(function (err, stations) {
-        if (err)
-            console.log(err);
-        else
-            res.json(stations);
-    });
+    radioStationModel.stations_list(utils.give_response(res), utils.get_page_number(req), utils.get_limit(req));
 };
 
 module.exports.search = function (req, res) {
-    if (req.query && req.query.keyword && req.query.keyword.trim()) {
-        res.json(search_box.find(req.query.keyword));
-    }
-    else res.json([]);
+    radioStationModel.search(utils.give_response(res), req.query.keyword, utils.get_page_number(req), utils.get_limit(req));
 };
